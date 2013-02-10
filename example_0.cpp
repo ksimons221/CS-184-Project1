@@ -39,6 +39,9 @@ struct lightSource
 	float blueValue;
 };
 
+float centerXSphere = 0;
+float centerYSphere = 0;
+float centerZSphere = 0;
 
 float kaR = 0;
 float kaG = 0;
@@ -194,9 +197,9 @@ void circle(float centerX, float centerY, float radius) {
 				// Directional
 
 				for (int i = 0; i< numDirectionalLights; i++) {
-					float directionLightX = directionalLights[i].xValue;
-					float directionLightY = directionalLights[i].yValue;
-					float directionLightZ = directionalLights[i].zValue;
+					float directionLightX = centerXSphere - directionalLights[i].xValue;
+					float directionLightY = centerYSphere - directionalLights[i].yValue;
+					float directionLightZ = centerZSphere - directionalLights[i].zValue;
 					float directionLightTotal = sqrt(sqr(directionLightX)+sqr(directionLightY)+sqr(directionLightZ));
 					directionLightX = directionLightX / directionLightTotal;
 					directionLightY = directionLightY / directionLightTotal;
@@ -242,10 +245,11 @@ void circle(float centerX, float centerY, float radius) {
 					diffuseBlue = diffuseBlue+ pointLights[i].blueValue * kdB * dotProductResult;
 				}
 
+				//Directional
 				for (int i = 0; i< numDirectionalLights; i++) {
-					float directionLightX = directionalLights[i].xValue;
-					float directionLightY = directionalLights[i].yValue;
-					float directionLightZ = directionalLights[i].zValue;
+					float directionLightX = centerXSphere - directionalLights[i].xValue;
+					float directionLightY = centerYSphere - directionalLights[i].yValue;
+					float directionLightZ = centerZSphere - directionalLights[i].zValue;
 					float directionLightTotal = sqrt(sqr(directionLightX)+sqr(directionLightY)+sqr(directionLightZ));
 					directionLightX = directionLightX / directionLightTotal;
 					directionLightY = directionLightY / directionLightTotal;
