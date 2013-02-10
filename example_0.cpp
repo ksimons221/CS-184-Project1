@@ -323,6 +323,14 @@ void myDisplay() {
 
 
 
+void keyPressed (unsigned char key, int x, int y) {  
+
+	if (key == ' ') {
+		exit(0);
+	}
+
+}  
+
 //****************************************************
 // the usual stuff, nothing exciting here
 //****************************************************
@@ -464,6 +472,8 @@ int main(int argc, char *argv[]) {   // first argument is the program running
 	glutInitWindowSize(viewport.w, viewport.h);
 	glutInitWindowPosition(0,0);
 	glutCreateWindow(argv[0]);
+	glutKeyboardFunc(keyPressed);
+
 
 	initScene();							// quick function to set up scene
 
@@ -475,6 +485,7 @@ int main(int argc, char *argv[]) {   // first argument is the program running
 
 	return 0;
 }
+
 
 
 
