@@ -170,9 +170,9 @@ void circle(float centerX, float centerY, float radius) {
 				float specularGreen = 0;
 				float specularBlue = 0;
 				for (int i = 0; i< numPointLights; i++) {
-					float pointLightX = pointLights[i].xValue -x;
-					float pointLightY = pointLights[i].yValue- y;
-					float pointLightZ = pointLights[i].zValue- z;
+					float pointLightX = (pointLights[i].xValue * radius) -x;
+					float pointLightY = (pointLights[i].yValue * radius)- y;
+					float pointLightZ = (pointLights[i].zValue * radius)- z;
 					float pointLightTotal = sqrt(sqr(pointLightX)+sqr(pointLightY)+sqr(pointLightZ));
 					pointLightX = pointLightX / pointLightTotal;
 					pointLightY = pointLightY / pointLightTotal;
@@ -232,9 +232,9 @@ void circle(float centerX, float centerY, float radius) {
 				/// Point Source
 
 				for (int i = 0; i< numPointLights; i++) {
-					float pointLightX = pointLights[i].xValue -x;
-					float pointLightY = pointLights[i].yValue- y;
-					float pointLightZ = pointLights[i].zValue- z;
+					float pointLightX = (pointLights[i].xValue * radius) -x;
+					float pointLightY = (pointLights[i].yValue * radius)- y;
+					float pointLightZ = (pointLights[i].zValue * radius)- z;
 					float pointLightTotal = sqrt(sqr(pointLightX)+sqr(pointLightY)+sqr(pointLightZ));
 					pointLightX = pointLightX / pointLightTotal;
 					pointLightY = pointLightY / pointLightTotal;
@@ -489,7 +489,6 @@ int main(int argc, char *argv[]) {   // first argument is the program running
 
 	return 0;
 }
-
 
 
 
