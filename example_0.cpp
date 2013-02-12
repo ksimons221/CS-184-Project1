@@ -23,6 +23,9 @@
 #include <math.h>
 
 
+#include <GL/glut.h>
+
+
 #define PI 3.14159265  // Should be used from mathlib
 inline float sqr(float x) { return x*x; }
 
@@ -136,7 +139,7 @@ void circle(float centerX, float centerY, float radius) {
 	// way.  In general drawing an object by loopig over the whole
 	// screen is wasteful.
 
-	int i,j;  // Pixel indices
+	int iStep,jStep;  // Pixel indices
 
 	int minI = max(0,(int)floor(centerX-radius));
 	int maxI = min(viewport.w-1,(int)ceil(centerX+radius));
@@ -144,12 +147,12 @@ void circle(float centerX, float centerY, float radius) {
 	int minJ = max(0,(int)floor(centerY-radius));
 	int maxJ = min(viewport.h-1,(int)ceil(centerY+radius));
 
-	for (i=0;i<viewport.w;i++) {
-		for (j=0;j<viewport.h;j++) {
+	for (iStep=0;iStep<viewport.w;iStep++) {
+		for (jStep=0;jStep<viewport.h;jStep++) {
 
 			// Location of the center of pixel relative to center of sphere
-			float x = (i+0.5-centerX);
-			float y = (j+0.5-centerY);
+			float x = (iStep+0.5-centerX);
+			float y = (jStep+0.5-centerY);
 
 			float dist = sqrt(sqr(x) + sqr(y));
 
@@ -169,6 +172,7 @@ void circle(float centerX, float centerY, float radius) {
 				float specularRed = 0;
 				float specularGreen = 0;
 				float specularBlue = 0;
+
 				for (int i = 0; i< numPointLights; i++) {
 					float pointLightX = (pointLights[i].xValue * radius) -x;
 					float pointLightY = (pointLights[i].yValue * radius)- y;
@@ -259,53 +263,41 @@ void circle(float centerX, float centerY, float radius) {
 					diffuseGreen = diffuseGreen+ directionalLights[i].greenValue * kdG * dotProductResult;
 					diffuseBlue = diffuseBlue+ directionalLights[i].blueValue * kdB * dotProductResult;
 				}
-				//directional light
+
 
 				//// Ambient Term
 
 				float ambientRed = 0;
-
 				float ambientGreen = 0;
-
 				float ambientBlue = 0;
 
 				for (int i = 0; i< numPointLights; i++) {
-
 					ambientRed = ambientRed + ( kaR * pointLights[i].redValue);
-
 					ambientGreen = ambientGreen+ (kaG * pointLights[i].greenValue);
-
 					ambientBlue = ambientBlue +(kaB * pointLights[i].blueValue);
 
 				}
 
 
 				for (int i = 0; i< numDirectionalLights; i++) {
-
 					ambientRed = ambientRed + ( kaR * directionalLights[i].redValue);
-
 					ambientGreen = ambientGreen+ (kaG * directionalLights[i].greenValue);
-
 					ambientBlue = ambientBlue +(kaB * directionalLights[i].blueValue);
-
 				}
 
 
 
+				setPixel(iStep,jStep, (specularRed+ambientRed+diffuseRed)/255,(specularGreen+ambientGreen+diffuseGreen)/255, (specularBlue+ambientBlue+diffuseBlue)/255);
 
-
-				setPixel(i,j, (specularRed+ambientRed+diffuseRed)/255,(specularGreen+ambientGreen+diffuseGreen)/255, (specularBlue+ambientBlue+diffuseBlue)/255);
-
-				// This is amusing, but it assumes negative color values are treated reasonably.
-				// setPixel(i,j, x/radius, y/radius, z/radius );
 			}
-
 
 		}
 	}
 
 
+
 	glEnd();
+
 }
 //****************************************************
 // function that does the actual drawing of stuff
@@ -341,8 +333,6 @@ void keyPressed (unsigned char key, int x, int y) {
 int main(int argc, char *argv[]) {   // first argument is the program running
 	//This initializes glut
 	glutInit(&argc, argv);
-
-	cout <<"num of args " << argc<< endl;
 
 	int i = 1;
 
